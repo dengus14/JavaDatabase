@@ -61,4 +61,14 @@ public class Page {
         recordID.setSlotNumber(newSlotIndex);
         return recordID;
     }
+
+    public byte[] get(RecordID recordID) {
+        int slotOffset = SLOT_ARRAY_START + (recordID.getSlotNumber() * SLOT_SIZE);
+        int rowToRead = buffer.getInt(slotOffset);
+        int lengthToRead = buffer.getInt(rowToRead);
+        byte[] row = new byte[lengthToRead];
+        buffer.get(rowToRead + 4, row);
+
+        return row;
+    }
 }
