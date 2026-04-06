@@ -63,11 +63,12 @@ public class Page {
     }
 
     public byte[] get(RecordID recordID) {
-        int slotOffset = SLOT_ARRAY_START + (recordID.getSlotNumber() * SLOT_SIZE);
-        int rowToRead = buffer.getInt(slotOffset);
-        int lengthToRead = buffer.getInt(rowToRead);
+        int slotOffset = SLOT_ARRAY_START + (recordID.getSlotNumber() * SLOT_SIZE); //the slot in header
+        int rowToRead = buffer.getInt(slotOffset); //byte offset of where the row lives in the buffer
+        int lengthToRead = buffer.getInt(rowToRead); //how many bytes we have to read to accurately get the data
         byte[] row = new byte[lengthToRead];
-        buffer.get(rowToRead + 4, row);
+        buffer.get(rowToRead + 4, row); //It reads row.length bytes starting at index rowToRead + 4
+                                              // from the buffer, and writes them into the row array in place.
 
         return row;
     }
