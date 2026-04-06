@@ -72,4 +72,9 @@ public class Page {
 
         return row;
     }
+
+    public void delete(RecordID recordID) {
+        int slotOffset = SLOT_ARRAY_START + (recordID.getSlotNumber() * SLOT_SIZE);
+        buffer.putInt(slotOffset, -1); //instead of pointing where to read, it is just -1 meaning its deleted
+    }
 }
