@@ -16,6 +16,11 @@ public class Page {
         buffer.putInt(NUM_ROWS_OFFSET, 0);              // initialize num_rows to 0 on empty page
     }
 
+    // this so DiskManager class can access private ByteBuffer buffer
+    public byte[] getData() {
+        return buffer.array();
+    }
+
     // reads num_rows from byte 0 of the buffer
     public int getNumRows() {
         return buffer.getInt(NUM_ROWS_OFFSET);
