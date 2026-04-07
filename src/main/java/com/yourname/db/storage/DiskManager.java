@@ -28,5 +28,12 @@ public class DiskManager {
         file.write(data);
     }
 
+    public Page readPage(int pageNumber) throws IOException{
+        int positionToRead = pageNumber * Page.PAGE_SIZE;
+        file.seek(positionToRead);
+        byte[] array = new byte[Page.PAGE_SIZE];
+        file.read(array);
 
+        return new Page(pageNumber,ByteBuffer.wrap(array));
+    }
 }

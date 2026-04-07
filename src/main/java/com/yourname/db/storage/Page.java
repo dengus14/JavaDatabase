@@ -18,6 +18,10 @@ public class Page {
         this.buffer = ByteBuffer.allocate(PAGE_SIZE);
         buffer.putInt(NUM_ROWS_OFFSET, 0);              // initialize num_rows to 0 on empty page
     }
+    public Page(int pageNumber, ByteBuffer buffer) {
+        this.pageNumber = pageNumber;
+        this.buffer = buffer;
+    }
 
     // this so DiskManager class can access private ByteBuffer buffer
     public byte[] getData() {
