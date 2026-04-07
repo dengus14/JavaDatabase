@@ -1,7 +1,10 @@
 package com.yourname.db.storage;
 
+import lombok.Data;
+
 import java.nio.ByteBuffer;
 
+@Data
 public class Page {
     private int pageNumber;
     public static final int PAGE_SIZE = 4096;           // fixed size of every page in bytes
