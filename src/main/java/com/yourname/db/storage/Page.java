@@ -110,4 +110,10 @@ public class Page {
                 "Slot index " + slotIndex + " is out of bounds for page with " + getNumRows() + " rows");
         }
     }
+
+    //helper method for HeapFile for scan() method
+    public boolean isDeleted(int slotIndex) {
+        int slotOffset = SLOT_ARRAY_START + (slotIndex * SLOT_SIZE);
+        return buffer.getInt(slotOffset) == DELETED_SLOT;
+    }
 }
