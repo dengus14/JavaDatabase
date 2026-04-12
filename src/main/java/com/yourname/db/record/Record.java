@@ -46,4 +46,38 @@ public class Record {
 
         return new Record(schema, columns);
     }
+
+    public byte[] serialize() {
+        byte[] bytes = new byte[schema.getTotalSize()];
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        for(Schema.Column column :  schema.getColumns()){
+            int offset = schema.getOffset(column.name());
+            switch (column.type()) {
+                case INT:
+                    int value = (int) columns.get(column.name());
+                    buffer.putInt(offset, value);
+                    break;
+                case BOOLEAN:
+                    boolean bool =  (boolean)columns.get(column.name());
+                    if(bool){
+                        buffer.put(offset,(byte)1);
+                    }
+                    else{
+                        buffer.put(offset,(byte)0);
+                    }
+                    break;
+                case VARCHAR:
+                    String v = (String) columns.get(column.name());
+                    byte[] data = v.getBytes();
+                    if (data.length > column.size()) {
+                        throw new IllegalArgumentException("VARCHAR value too long for column: " + column.name());
+                    }
+                    buffer.put(offset,data);
+
+            }
+
+        }
+
+        return buffer.array();
+    }
 }
