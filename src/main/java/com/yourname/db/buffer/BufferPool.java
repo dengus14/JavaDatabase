@@ -4,6 +4,7 @@ import com.yourname.db.storage.DiskManager;
 import com.yourname.db.storage.Page;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -50,6 +51,40 @@ public class BufferPool {
         }
         throw new IOException("BufferPool is full, all pages pinned");
 
+    }
+
+
+    public void unpinPage(int pageNumber, boolean isDirty){
+        if (!map.containsKey(pageNumber)) {
+            throw new IllegalArgumentException("Page " + pageNumber + " not found");
+        }
+        Frame frame = map.get(pageNumber);
+
+        if(frame.pinCount == 0){
+            throw new IllegalStateException("Unpinning page that was never pinned");
+        }
+        else{
+            frame.pinCount--;
+            if(isDirty){
+                frame.dirty = true;
+            }
+        }
+    }
+    public void flushPage(int pageNumber) throws IOException {
+        if (!map.containsKey(pageNumber)) {
+            throw new IllegalStateException("Page " + pageNumber + " not found");
+        }
+        Frame frame = map.get(pageNumber);
+        if (frame.dirty){
+            diskManager.writePage(frame.page);
+            frame.dirty = false;
+        }
+    }
+
+    public void flushAll() throws IOException {
+        for (int pageNumber : new java.util.ArrayList<>(map.keySet())) {
+            flushPage(pageNumber);
+        }
     }
 
 
