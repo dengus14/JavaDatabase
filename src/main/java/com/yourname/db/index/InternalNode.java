@@ -17,4 +17,8 @@ public class InternalNode extends BPlusTreeNode{
     public boolean isLeaf() {
         return false;
     }
+
+    public List<BPlusTreeNode> getChildren() {
+        return children;
+    }
 }
