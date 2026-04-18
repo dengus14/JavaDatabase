@@ -1,15 +1,17 @@
 package com.yourname.db.index;
 
 import com.yourname.db.storage.RecordID;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeafNode extends BPlusTreeNode {
-    @Getter
     private List<RecordID> recordIDs;
-    private LeafNode next;
+
+    public List<RecordID> getRecordIDs() {
+        return recordIDs;
+    }
+    public LeafNode next;
 
     @Override
     public boolean isLeaf() {
@@ -19,5 +21,13 @@ public class LeafNode extends BPlusTreeNode {
     public LeafNode(LeafNode next) {
         this.recordIDs = new ArrayList<>();
         this.next = next;
+    }
+
+    public void setNext(LeafNode next) {
+        this.next = next;
+    }
+
+    public LeafNode getNext() {
+        return next;
     }
 }
