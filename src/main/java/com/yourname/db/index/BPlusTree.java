@@ -2,6 +2,9 @@ package com.yourname.db.index;
 
 import com.yourname.db.storage.RecordID;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class BPlusTree {
 
     private BPlusTreeNode root;
@@ -40,4 +43,17 @@ public class BPlusTree {
         }
         return null;
     }
+
+
+    public void insert(int key, RecordID rid){
+        Deque<InternalNode> stack = new ArrayDeque<>();
+        BPlusTreeNode current = root;
+
+        while (!current.isLeaf()){
+            stack.push((InternalNode) current);
+        }//continue
+
+    }
+
+
 }
