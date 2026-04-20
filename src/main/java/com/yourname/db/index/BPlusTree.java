@@ -141,6 +141,7 @@ public class BPlusTree {
                         newCurr2 = newInternal;
                         needsNewRoot = true;
                     } else {
+
                         break;
                     }
                 }
