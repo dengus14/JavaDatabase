@@ -16,6 +16,10 @@ public class Parser {
         ParsedStatement parsedStatement;
 
         switch (parsedString[0]) {
+
+            default:
+                throw new IllegalArgumentException("Unknown statement type: " + parsedString[0]);
+
             case "SELECT":
                 parsedStatement = parseSelect(parsedString);
                 break;
@@ -44,9 +48,6 @@ public class Parser {
         ps.tableName = parsedString[2];
         return ps;
     }
-
-
-
 
 
     // DELETE FROM users WHERE id = 5
