@@ -45,4 +45,16 @@ public class Catalog {
         }
         throw new IllegalStateException("Table " + tableName + " does not exist");
     }
+
+    public boolean hasTable(String tableName){
+        return tables.containsKey(tableName);
+    }
+
+    public void dropTable(String tableName) throws IllegalStateException{
+        if (tables.containsKey(tableName)) {
+            tables.remove(tableName);
+            return;
+        }
+        throw new IllegalStateException("Table " + tableName + " does not exist");
+    }
 }
