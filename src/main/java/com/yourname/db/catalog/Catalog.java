@@ -17,6 +17,10 @@ public class Catalog {
         HeapFile heapFile;
     }
 
+    public Catalog() {
+        tables = new HashMap<>();
+    }
+
 
     public void createTable(String tableName, Schema schema, String filePath) throws IllegalStateException, IOException {
         if (tables.containsKey(tableName)) {
