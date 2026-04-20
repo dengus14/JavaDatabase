@@ -138,4 +138,37 @@ class BPlusTreeTest {
 
         assertEquals(keys.length, totalKeys, "All keys should be present across leaves");
     }
+
+    @Test
+    void searchPerformanceWith1000Keys() {
+        int count = 1000;
+        for (int i = 0; i < count; i++) {
+            tree.insert(i, new RecordID(i, i));
+        }
+
+        int target = 777;
+
+        // Warm up JIT
+        for (int i = 0; i < 1000; i++) {
+            tree.search(target);
+        }
+
+        // Timed run — average over 10,000 searches
+        int iterations = 10_000;
+        long start = System.nanoTime();
+        for (int i = 0; i < iterations; i++) {
+            tree.search(target);
+        }
+        long elapsed = System.nanoTime() - start;
+
+        double avgNanos = (double) elapsed / iterations;
+        System.out.println("=== B+ Tree Search Performance (order=3, 1000 keys) ===");
+        System.out.println("  Total for " + iterations + " searches: " + (elapsed / 1_000_000.0) + " ms");
+        System.out.println("  Average per search: " + avgNanos + " ns (" + (avgNanos / 1_000_000.0) + " ms)");
+
+        // Sanity check — the search still returns the right result
+        RecordID found = tree.search(target);
+        assertNotNull(found);
+        assertEquals(new RecordID(target, target), found);
+    }
 }
