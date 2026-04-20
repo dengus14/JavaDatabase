@@ -1,6 +1,8 @@
 package com.yourname.db.query;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Parser {
 
@@ -32,7 +34,21 @@ public class Parser {
     }
 
     private ParsedStatement parseInsert(String[] parsedString) {
+        ParsedStatement ps = new ParsedStatement();
+        ps.statementType = StatementType.INSERT;
+        List<String> values = new ArrayList<>();
+        for(int i = 4; i < parsedString.length; i++){
+            values.add(parsedString[i]);
+        }
+        ps.values = values;
+        ps.tableName = parsedString[2];
+        return ps;
     }
+
+
+
+
+
     // DELETE FROM users WHERE id = 5
     private ParsedStatement parseDelete(String[] parsedString) {
         ParsedStatement ps = new ParsedStatement();
