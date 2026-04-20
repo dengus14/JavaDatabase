@@ -38,7 +38,7 @@ public class BPlusTree {
         if (current.isLeaf()){
             LeafNode newCurr = (LeafNode) current;
             for (int i = 0; i < current.keys.size(); i++){
-                if (current.keys.get(i) == key){
+                if (current.keys.get(i).equals(key)){
                     return newCurr.getRecordIDs().get(i);
                 }
             }
