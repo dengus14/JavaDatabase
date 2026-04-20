@@ -31,4 +31,18 @@ public class Catalog {
         tables.put(tableName, tableMetaData);
 
     }
+
+    public Schema getSchema(String tableName) throws IllegalStateException{
+        if (tables.containsKey(tableName)) {
+            return tables.get(tableName).schema;
+        }
+        throw new IllegalStateException("Table " + tableName + " does not exist");
+    }
+
+    public HeapFile getHeapFile(String tableName) throws IllegalStateException{
+        if (tables.containsKey(tableName)) {
+            return tables.get(tableName).heapFile;
+        }
+        throw new IllegalStateException("Table " + tableName + " does not exist");
+    }
 }
