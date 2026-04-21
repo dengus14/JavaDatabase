@@ -80,4 +80,8 @@ public class Record {
 
         return buffer.array();
     }
+
+    public Object get(String columnName) {
+        return columns.get(columnName);
+    }
 }

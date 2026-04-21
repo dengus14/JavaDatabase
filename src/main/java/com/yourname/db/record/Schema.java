@@ -1,5 +1,6 @@
 package com.yourname.db.record;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,6 +38,15 @@ public class Schema {
 
     public List<Column> getColumns() {
         return columns;
+    }
+
+    public Column getColumn(String name) throws IllegalArgumentException {
+        for (Column column : columns) {
+            if (column.name().equals(name)) {
+                return column;
+            }
+        }
+        throw new IllegalArgumentException("Column not found");
     }
 
 }

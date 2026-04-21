@@ -19,8 +19,6 @@ public class QueryPlan {
     public static QueryPlan fromStatement(ParsedStatement ps) {
         QueryPlan plan = new QueryPlan();
         switch (ps.statementType){
-            default:
-                throw new IllegalArgumentException("Unknown statement type: " + ps.statementType);
             case INSERT:
                 plan.planType = PlanType.INSERT;
                 break;
@@ -30,6 +28,8 @@ public class QueryPlan {
             case SELECT:
                 plan.planType = PlanType.SEQ_SCAN;
                 break;
+            default:
+                throw new IllegalArgumentException("Unknown statement type: " + ps.statementType);
 
         }
         plan.tableName = ps.tableName;
