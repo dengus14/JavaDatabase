@@ -1,5 +1,6 @@
 package com.yourname.db.catalog;
 
+import com.yourname.db.index.BPlusTree;
 import com.yourname.db.record.Schema;
 import com.yourname.db.storage.HeapFile;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 
 public class Catalog {
     private Map<String, TableMetaData> tables;
+    private Map<String, BPlusTree> indexes;
 
 
     private class TableMetaData {
@@ -19,6 +21,22 @@ public class Catalog {
 
     public Catalog() {
         tables = new HashMap<>();
+        indexes = new HashMap<>();
+    }
+
+    public void createIndex(String tableName, BPlusTree tree) {
+        if (!tables.containsKey(tableName)) {
+            throw new IllegalStateException("Table " + tableName + " does not exist");
+        }
+        indexes.put(tableName, tree);
+    }
+
+    public BPlusTree getIndex(String tableName) {
+        return indexes.get(tableName);
+    }
+
+    public boolean hasIndex(String tableName) {
+        return indexes.containsKey(tableName);
     }
 
 
