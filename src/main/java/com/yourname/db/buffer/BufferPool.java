@@ -86,14 +86,6 @@ public class BufferPool {
             flushPage(pageNumber);
         }
     }
-
-
-
-
-
-
-
-
     private class Frame {
         private Page page;
         private int pinCount;
