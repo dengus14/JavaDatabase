@@ -22,8 +22,17 @@ public class Executor {
     }
 
 
-    public List<Record> execute(QueryPlan queryPlan) {
-
+    public List<Record> execute(QueryPlan queryPlan) throws IOException {
+        switch (queryPlan.planType) {
+            case INSERT:
+                return executeInsert(queryPlan);
+            case DELETE:
+                return executeDelete(queryPlan);
+            case SEQ_SCAN:
+                return executeSeqScan(queryPlan);
+            default:
+                throw new IllegalArgumentException("Unknown planType: " + queryPlan.planType);
+        }
     }
 
     public List<Record> executeSeqScan(QueryPlan queryPlan) throws IOException {
@@ -121,6 +130,39 @@ public class Executor {
         HeapFile heapFile = catalog.getHeapFile(queryPlan.tableName);
         Schema schema = catalog.getSchema(queryPlan.tableName);
 
+        List<RecordID> rids = heapFile.scan();
+
+        boolean hasCondition = queryPlan.condition != null;
+        Object conditionValue = null;
+
+        if (hasCondition) {
+            Schema.Column col = schema.getColumn(queryPlan.condition.column);
+            switch (col.type()) {
+                case INT:
+                    conditionValue = Integer.parseInt(queryPlan.condition.value);
+                    break;
+                case BOOLEAN:
+                    conditionValue = Boolean.parseBoolean(queryPlan.condition.value);
+                    break;
+                case VARCHAR:
+                    conditionValue = queryPlan.condition.value;
+                    break;
+            }
+        }
+
+        for (RecordID rid: rids) {
+            byte[] rawData = heapFile.get(rid);
+            Record record = Record.deserialize(rawData, schema);
+            if (hasCondition) {
+                Object recordValue = record.get(queryPlan.condition.column);
+                if (recordValue.equals(conditionValue)) {
+                    heapFile.delete(rid);
+                }
+            }else {
+                heapFile.delete(rid);
+            }
+        }
+        return records;
 
     }
 
