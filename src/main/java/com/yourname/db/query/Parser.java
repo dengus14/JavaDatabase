@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Parser {
 
-    private ParsedStatement parse(String sql){
+    public ParsedStatement parse(String sql){
         String[] parsedString = sql.split("\\s+");
 
         for (int i = 0; i < parsedString.length; i++) {
