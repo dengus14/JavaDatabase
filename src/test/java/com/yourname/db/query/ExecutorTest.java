@@ -62,6 +62,7 @@ class ExecutorTest {
     }
 
 
+
     @Test
     void selectWithWhereUsingIndex() throws IOException {
         run("INSERT INTO users VALUES (1, 'Alice', true)");
